@@ -28,6 +28,7 @@ public:
     QAction *actionLogin;
     QAction *actionLogout;
     QAction *actionFolder;
+    QAction *actionGrabScreen;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QWidget *imageWidget;
@@ -47,6 +48,8 @@ public:
         actionLogout->setObjectName(QStringLiteral("actionLogout"));
         actionFolder = new QAction(ReflowSolderingProfileClass);
         actionFolder->setObjectName(QStringLiteral("actionFolder"));
+        actionGrabScreen = new QAction(ReflowSolderingProfileClass);
+        actionGrabScreen->setObjectName(QStringLiteral("actionGrabScreen"));
         centralWidget = new QWidget(ReflowSolderingProfileClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -78,6 +81,7 @@ public:
         menu->addAction(actionLogin);
         menu->addAction(actionLogout);
         menu_2->addAction(actionFolder);
+        menu_2->addAction(actionGrabScreen);
 
         retranslateUi(ReflowSolderingProfileClass);
 
@@ -90,6 +94,7 @@ public:
         actionLogin->setText(QApplication::translate("ReflowSolderingProfileClass", "\347\231\273\345\275\225", 0));
         actionLogout->setText(QApplication::translate("ReflowSolderingProfileClass", "\346\263\250\351\224\200", 0));
         actionFolder->setText(QApplication::translate("ReflowSolderingProfileClass", "\346\211\223\345\274\200\346\226\207\344\273\266\345\244\271", 0));
+        actionGrabScreen->setText(QApplication::translate("ReflowSolderingProfileClass", "\346\210\252\345\261\217", 0));
         menu->setTitle(QApplication::translate("ReflowSolderingProfileClass", "\347\231\273\345\275\225/\346\263\250\351\224\200", 0));
         menu_2->setTitle(QApplication::translate("ReflowSolderingProfileClass", "\346\230\216\347\273\206", 0));
     } // retranslateUi

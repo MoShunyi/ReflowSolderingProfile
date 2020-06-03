@@ -6,6 +6,8 @@ ReflowSolderingProfile::ReflowSolderingProfile(QWidget *parent)
 {
 	ui.setupUi(this);
 	ReadSettings();
+	//log = nullptr;
+	//scanDMC = nullptr;
 
 	//添加ImageOpacity属性;
 	this->setProperty("ImageOpacity", 1.0);
@@ -29,7 +31,7 @@ ReflowSolderingProfile::ReflowSolderingProfile(QWidget *parent)
 
 	//点击明细菜单
 	connect(ui.actionFolder,&QAction::triggered,this,&ReflowSolderingProfile::OnActionFolderClicked);
-
+	connect(ui.actionGrabScreen,&QAction::triggered,this,&ReflowSolderingProfile::OnActionGrabScreenClicked);
 	this->setFixedSize(QSize(widgetWidth, widgetHigth));
 
 	this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint); //设置窗口为最前端显示以及隐藏窗口边框
@@ -47,6 +49,7 @@ void ReflowSolderingProfile::ReadSettings()
 	widgetWidth = settings->value("/Window/width").toInt();
 	widgetHigth = settings->value("/Window/higth").toInt();
 	imageDir = settings->value("/Dir/imageDir").toString();
+	screenDir = settings->value("/Dir/screenDir").toString();
 	interval = settings->value("/Interval/interval").toInt();
 }
 void ReflowSolderingProfile::SetImageList(QStringList imageFileNameList)
@@ -101,6 +104,38 @@ void ReflowSolderingProfile::OnActionLogoutClicked()
 void ReflowSolderingProfile::OnActionFolderClicked()
 {
 	QDesktopServices::openUrl(QUrl(imageDir));
+}
+
+void ReflowSolderingProfile::OnActionGrabScreenClicked()
+{
+	scanDMC = new ScanDMC(this);
+	//connect(scanDMC,&ScanDMC::SendString,[=](QString typeNo){typeNumber = typeNo;});
+	connect(scanDMC,&ScanDMC::SendString,this,&ReflowSolderingProfile::ReceiveTypeNo);
+	scanDMC->setModal(true);
+	scanDMC->show();
+
+}
+
+void ReflowSolderingProfile::ReceiveTypeNo(QString typeNo)
+{
+	typeNumber = typeNo;
+	QScreen *screen = QGuiApplication::primaryScreen();
+	QString filePathName = screenDir.append("/%1").arg(typeNumber);
+	QString currentTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz");
+	filePathName.append(QString(" %1.jpg").arg(currentTime));
+	if(!screen->grabWindow(0).save(filePathName, "jpg"))
+	{
+		QMessageBox *mb = new QMessageBox(this);
+		mb->setIcon(QMessageBox::Critical);
+		mb->setText(QStringLiteral("<font size = 6>保存截图失败</font>"));
+		mb->exec();
+	}else
+	{
+		QMessageBox *mb = new QMessageBox(this);
+		mb->setIcon(QMessageBox::Information);
+		mb->setText(QStringLiteral("<font size = 6>保存截图成功</font>"));
+		mb->exec();
+	}
 }
 
 void ReflowSolderingProfile::OnImageChangeTimeout()

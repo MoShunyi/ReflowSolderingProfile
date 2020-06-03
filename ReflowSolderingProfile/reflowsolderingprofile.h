@@ -14,7 +14,11 @@
 #include <QDesktopWidget>
 #include <QSettings>
 #include <QDesktopServices>
+#include <QScreen>
+#include <QDateTime>
+#include <QMessageBox>
 #include "login.h"
+#include "scandmc.h"
 #include "ui_reflowsolderingprofile.h"
 
 class ReflowSolderingProfile : public QMainWindow
@@ -44,6 +48,10 @@ public slots:
 	void OnActionLogoutClicked();
 	//明细按钮点击
 	void OnActionFolderClicked();
+	void OnActionGrabScreenClicked();
+    
+	//接收扫描窗口发送的typeNo
+	void ReceiveTypeNo(QString typeNo);
 
 	//图片切换时钟
 	void OnImageChangeTimeout();
@@ -63,10 +71,13 @@ private:
 private:
 	Ui::ReflowSolderingProfileClass ui;
 	Login *log;
+	ScanDMC *scanDMC;
 	QPoint startPoint;
 
 	QSettings *settings;
-	QString imageDir;
+	QString imageDir;   //动画图片路径
+	QString screenDir;  //截屏保存路径
+	QString typeNumber; //产品型号
 
 	//窗口尺寸
 	int widgetWidth;

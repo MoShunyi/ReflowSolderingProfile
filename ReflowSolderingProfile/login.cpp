@@ -32,10 +32,10 @@ void Login::OnButtonBoxLoginClicked(QAbstractButton *button)
 	}else
 		if (strUsername.isEmpty() || strPassword.isEmpty())
 		{
-			QMessageBox mb;
-			mb.setIcon(QMessageBox::Warning);
-			mb.setText(QString(QStringLiteral("用户名或密码为空，请重新输入")));
-			mb.exec();
+			QMessageBox *mb = new QMessageBox(this);
+			mb->setIcon(QMessageBox::Warning);
+			mb->setText(QString(QStringLiteral("<font size = 6>用户名或密码为空，请重新输入</font>")));
+			mb->exec();
 
 		} 
 		else
@@ -46,7 +46,7 @@ void Login::OnButtonBoxLoginClicked(QAbstractButton *button)
 			}
 			else 
 			{
-				QMessageBox::warning(this,QStringLiteral("警告！"),QStringLiteral("用户名或者密码错误"),QMessageBox::Yes);
+				QMessageBox::warning(this,QStringLiteral("警告！"),QStringLiteral("<font size = 6>用户名或者密码错误</font>"),QMessageBox::Yes);
 			}
 		}
 
